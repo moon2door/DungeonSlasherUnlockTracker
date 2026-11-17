@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>던전슬래셔 해금 현황</title>
+  <link rel="stylesheet" href="./dashboard.css">
+  <script src="./dashboard.js" type="module"></script>
+</head>
+<body>
+  <main class="page">
+    <header class="page-header">
+      <div>
+        <h1>던전슬래셔 해금 현황</h1>
+        <p class="save-status" id="save-status" aria-live="polite">세이브를 읽는 중</p>
+      </div>
+      <div class="page-actions">
+        <span class="launcher-status" id="launcher-status" data-state="connecting" role="status">연결 중</span>
+        <button class="refresh" id="refresh" type="button">새로고침</button>
+        <button class="quiet" id="stop" type="button" disabled>실행기 종료</button>
+      </div>
+    </header>
+
+    <div id="notice" class="notice" role="status" hidden></div>
+    <section class="totals" aria-label="해금 수">
+      <div class="total-card">
+        <h2>스킬</h2>
+        <p class="total-number"><strong id="skill-open">—</strong><span id="skill-total"></span></p>
+        <div class="meter"><div id="skill-meter"></div></div>
+      </div>
+      <div class="total-card">
+        <h2>유물 전체</h2>
+        <p class="total-number"><strong id="artifact-open">—</strong><span id="artifact-total"></span></p>
+        <div class="meter"><div id="artifact-meter"></div></div>
+      </div>
+      <div class="total-card featured">
+        <h2>상급·특급 유물</h2>
+        <p class="total-number"><strong id="high-open">—</strong><span id="high-total"></span></p>
+        <div class="meter"><div id="high-meter"></div></div>
+      </div>
+    </section>
+
+    <section class="library" aria-label="해금 목록">
+      <div class="tabs" role="tablist" aria-label="도감 분류">
+        <button id="tab-skill" type="button" data-tab="skill" role="tab" aria-selected="true" aria-controls="entries">스킬</button>
+        <button id="tab-artifact" type="button" data-tab="artifact" role="tab" aria-selected="false" aria-controls="entries" tabindex="-1">유물</button>
+        <button id="tab-plan" type="button" data-tab="plan" role="tab" aria-selected="false" aria-controls="plan" tabindex="-1">추천 순서</button>
+      </div>
+      <div id="entries" role="tabpanel" aria-labelledby="tab-skill" aria-busy="true">
+        <div class="filters">
+          <label class="search">
+            <span class="sr-only">이름 또는 조건 검색</span>
+            <input type="search" id="query" placeholder="이름 또는 해금 조건 검색" autocomplete="off">
+          </label>
+          <div class="status-filters" role="group" aria-label="해금 상태">
+            <button type="button" data-status="locked" aria-pressed="true">미해금</button>
+            <button type="button" data-status="unlocked" aria-pressed="false">해금됨</button>
+            <button type="button" data-status="all" aria-pressed="false">전체</button>
+          </div>
+          <button id="favorites-only" class="quiet favorite-filter" type="button" aria-pressed="false" disabled>즐겨찾기만</button>
+          <label class="grade" id="grade-field" hidden>
+            <span class="sr-only">유물 등급</span>
+            <select id="grade">
+              <option value="all">전체 등급</option>
+              <option value="high">3성 이상</option>
+              <option value="하급" aria-label="하급">☆</option>
+              <option value="중급" aria-label="중급">☆☆</option>
+              <option value="상급" aria-label="상급">☆☆☆</option>
+              <option value="특급" aria-label="특급">★</option>
+              <option value="보스">보스</option>
+            </select>
+          </label>
+        </div>
+        <p id="favorite-notice" class="notice favorite-notice" role="status" hidden></p>
+        <p class="result-count" id="result-count" aria-live="polite"></p>
+        <div id="list-header" class="entry-header" aria-hidden="true" hidden>
+          <span>이름</span><span>해금 조건</span><span>상태</span>
+        </div>
+        <ul id="list" class="entry-list" aria-label="항목"></ul>
+        <p class="empty" id="empty" hidden></p>
+      </div>
+      <div id="plan" class="plan" role="tabpanel" aria-labelledby="tab-plan" aria-busy="true" hidden>
+        <div id="plan-content"></div>
+      </div>
+    </section>
+    <footer id="catalog-version"></footer>
+  </main>
+  <dialog id="unlock-route" class="unlock-dialog" aria-labelledby="unlock-title">
+    <header class="unlock-header">
+      <div>
+        <p>해금 루트</p>
+        <h2 id="unlock-title"></h2>
+      </div>
+      <button id="unlock-close" class="quiet" type="button" autofocus>닫기</button>
+    </header>
+    <section id="unlock-loadout" class="unlock-loadout" aria-labelledby="unlock-loadout-title" hidden>
+      <h3 id="unlock-loadout-title">추천 스킬·유물</h3>
+      <div id="unlock-loadout-content"></div>
+    </section>
+    <ol id="unlock-steps" class="unlock-steps"></ol>
+    <p id="unlock-completed" class="unlock-completed" hidden></p>
+  </dialog>
+</body>
+</html>

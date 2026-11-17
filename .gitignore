@@ -1,0 +1,11 @@
+.venv/
+bin/
+obj/
+dist/
+generated/
+__pycache__/
+*.pyc
+*.exe
+*.pdb
+*.es3
+*.es3.*
